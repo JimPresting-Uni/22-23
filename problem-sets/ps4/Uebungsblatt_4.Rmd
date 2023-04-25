@@ -1,7 +1,7 @@
 
 ```{r 'check_ps', include=FALSE}
 
-user.name = 'ENTER A USER NAME HERE'
+user.name = 'Jim Presting'
 ```
 
 # RTutor Uebungsblatt 4 - Projektkurs
@@ -46,9 +46,9 @@ library(stargazer)
 a) Im ersten Schritt laden wir die zur Verfuegung stehenden Daten. Laden Sie die unter Daten bereitgestellten `EU_Makro.csv` Daten in R.
 
 ```{r "1_a"}
-____ <- read_csv("____")
+eu_makro <- read_csv("data/EU_Makro.csv")
 
-# enter your code here ...
+eu_makro
 
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
@@ -75,13 +75,10 @@ Auf den ersten Blick ist zu erkennen, das ein positiver Zusammenhang zwischen de
 b) Eine beliebte Methode einen Zusammenhang in einer einzelnen Zahl zusammenzufassen ist eine einfache lineare Regression mittels der Methode der kleinsten Quadrate (engl. Ordinary Least Squares OLS). Regressieren Sie in R `unempl` auf `debt_share_country_pro`. Speichern Sie das Ergebnis in der Variablen `reg1` und zeigen Sie dann eine Zusammenfassung von `reg1`. Bitte kommentieren Sie hierfuer den Code aus und ergaenzen Sie diesen: 
 
 ```{r "1_b"}
-reg1 <- lm(___~debt_share_country_pro, data=___)
-summary(___)
-
-# enter your code here ...
+reg1 <- lm(unempl~debt_share_country_pro, data=eu_makro)
+summary(reg1)
 
 
-# enter your code here ...
 
 ```
 
@@ -104,7 +101,7 @@ Geben Sie hier Ihrer Antwort gerundet auf drei Nachkommastellen ein. Achten Sie 
 
 ```{r "1_c",optional=TRUE}
 
-# enter your code here ...
+6.895
 
 ```
 
@@ -113,16 +110,19 @@ d) Manchmal moechten wir mit den geschaetzten Koeffizienten direkt weiterrechnen
 
 # enter your code here ...
 
+coef(reg1)
+
 
 # enter your code here ...
-
+b0 <- coef(reg1)[1]  
+b1 <- coef(reg1)[2]
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
 f) Fuegen Sie der Grafik `g1` in "blue" eine Linie mit der in `reg1` berechneten Regressionsgerade hinzu. Speichern Sie diese Grafik als `g2` und lassen Sie sich diese anschliessend anzeigen. Bitte fuellen Sie hierzu die Luecken aus:
 
 ```{r "1_f"}
-g2 <- g1 + geom_abline(intercept=___,slope=___,colour="___")
+g2 <- g1 + geom_abline(intercept=b0,slope=b1,colour="blue")
 
 # enter your code here ...
 
@@ -135,6 +135,7 @@ g) In einer einfachen linearen Regression von `y` auf `x`, hat der geschaetzte K
 ```{r "1_g",optional=TRUE}
 
 # enter your code here ...
+cor(eu_makro$unempl, eu_makro$debt_share_country_pro, use = "pairwise.complete.obs")
 
 ```
 Das Vorzeichen ist gleich wie von unserem Schaetzer von beta1 in der linearen Regression, aber die Korrelation hat keine intuitive quantitative Interpretation.
@@ -172,7 +173,7 @@ Geben Sie die richtige Loesung 1 oder 2 an.
 ```{r "2_a_2"}
 
 # enter your code here ...
-
+2
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
@@ -180,7 +181,7 @@ Regressieren Sie nun `y` auf `x` mittels `lm`. Es ist nicht notwendig das Ergebn
 ```{r "2_a_3",optional=TRUE}
 
 # enter your code here ...
-
+lm(form = y ~ x)
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
@@ -214,16 +215,16 @@ Tippen Sie die korrekte Antwort 1,2 oder 3 ein:
 ```{r "2_b_2"}
 
 # enter your code here ...
-
+2
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
 c) Nutzen Sie die Funktion `replicate`, um `simulate.and.estimate` gleich 5000 mal hintereinander aufzurufen. Speichern Sie die Ergebnisse in einem Vektor `sim.beta1` ab.
 ```{r "2_c"}
-____ <- ____(____,simulate.and.estimate())
+
 
 # enter your code here ...
-
+sim.beta1 <- replicate(5000,simulate.and.estimate())
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
@@ -231,7 +232,7 @@ Zeigen Sie ein Histogramm von sim.beta1 mit dem Befehl `hist`.
 ```{r "2_c_2",optional=TRUE}
 
 # enter your code here ...
-
+hist(sim.beta1)
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
@@ -244,7 +245,7 @@ d) Berechnen Sie nun die Standardabweichung der simulierten Schaetzer `sim.beta1
 ```{r "2_d",optional=TRUE}
 
 # enter your code here ...
-
+sd(sim.beta1)
 ```
 
 Diese Standardabweichung misst wie stark unser Schaetzer aufgrund der Zufallseinfluesse in der Stoergroesse vom echten Wert beta1=2 im Schnitt abweicht. Diese Standardabweichung eines Schaetzers heißt `Standardfehler`.
@@ -255,7 +256,7 @@ e) Auch wenn Sie nur eine Stichprobe haben und nicht tausende Simulationen durch
 reg1 <-  lm(y~x)
 
 # enter your code here ...
-
+summary(reg1)
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
@@ -279,10 +280,10 @@ Genauere Konfidenzintervalle können Sie mit dem Befehl `confint` berechnen. Wen
 ```{r "2_f",optional=TRUE}
 
 # enter your code here ...
-
+confint(reg1,level=0.95)
 
 # enter your code here ...
-
+confint(reg1,level = 0.99)
 ```
 Hier waere ein guter Zeitpunkt das Addin 'Check Problemset' auszufuehren!
 
